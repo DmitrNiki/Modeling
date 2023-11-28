@@ -1,6 +1,6 @@
 COURSE=DNPM_2023_autumn
-CODE?=2_all_velocities
-SCRIPT?=task2
+CODE?=3_2d_peak
+SCRIPT?=task3
 
 compile:
 	g++ src/$(COURSE)/$(CODE).cpp -o bin/$(CODE)
