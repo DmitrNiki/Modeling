@@ -1,4 +1,4 @@
-COURSE=MAP_2023_autumn
+COURSE=DNPM_2023_autumn
 CODE?=2_all_velocities
 SCRIPT?=task2
 
