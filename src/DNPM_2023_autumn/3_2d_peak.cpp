@@ -10,10 +10,12 @@ const int T = 2000, K_x = 100, K_y = 100, P_x = 7, P_y = 7,
 
 const int SIZE = P_x * P_y * K_x * K_y;
 
+
 //inittials
 const int width = 20;
 const int center_x = 50, center_y = 50;
-const int p0_x = 2, p0_y = -1;
+const int p0_x = 2, p0_y = 3;
+const int wall_x = 30;
 
 // p \in [-5; 5]
 int index(int k_x, int k_y, int p_x, int p_y){
@@ -30,14 +32,31 @@ double get_gamma_y(int p){
 }
 
 void set_initial_values(double* data){
+	double denom = 0, gamma_x, gamma_y;
+	for(int p_x = -P0_x; p_x < P0_x; p_x++){
+		for (int p_y = -P0_y; p_y < P0_y; p_y++){
+			gamma_x = get_gamma_x(p_x);
+			gamma_y = get_gamma_y(p_y);
+			denom += std::exp(-1. * (gamma_x * gamma_x + gamma_y * gamma_y) / 2.);
+		}
+	}
+
     for (int k_x = 0; k_x < K_x; k_x++){
 	    for (int k_y = 0; k_y < K_y; k_y++){
 		    for(int p_x = -P0_x; p_x < P0_x; p_x++){
 			    for (int p_y = -P0_y; p_y < P0_y; p_y++){
-				    if(p_x == p0_x && p_y == p0_y){
-					    data[index(k_x, k_y, p_x, p_y)] = std::exp(-1. * ((k_x - center_x) * (k_x - center_x) + (k_y - center_y) * (k_y - center_y)) / width / width);
+				    // if (p_x == p0_x && p_y == p0_y){
+					//     data[index(k_x, k_y, p_x, p_y)] = std::exp(-1. * ((k_x - center_x) * (k_x - center_x) + (k_y - center_y) * (k_y - center_y)) / width / width);
+				    // } else {
+					//    data[index(k_x, k_y, p_x, p_y)] = 1e-9;
+				    // }
+					gamma_x = get_gamma_x(p_x);
+					gamma_y = get_gamma_y(p_y);
+			
+					if (k_x < wall_x){
+						data[index(k_x, k_y, p_x, p_y)] = std::exp(-1. * (gamma_x * gamma_x + gamma_y * gamma_y) / 2.) / denom;
 				    } else {
-					   data[index(k_x, k_y, p_x, p_y)] = 1e-9;
+ 					    data[index(k_x, k_y, p_x, p_y)] = 1e-9;
 				    }
 			    }
 		    }
