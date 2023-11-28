@@ -1,4 +1,4 @@
-count = 990
+count = 1990
 step = 10
 max_z = 0.1
 

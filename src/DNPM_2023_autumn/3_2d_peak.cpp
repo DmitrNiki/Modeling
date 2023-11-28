@@ -5,7 +5,7 @@
 const int step = 10;
 
 // Steps
-const int T = 1000, K_x = 100, K_y = 100, P_x = 7, P_y = 7, 
+const int T = 2000, K_x = 100, K_y = 100, P_x = 7, P_y = 7, 
       P0_x = P_x / 2, P0_y = P_y / 2;
 
 const int SIZE = P_x * P_y * K_x * K_y;
@@ -13,7 +13,7 @@ const int SIZE = P_x * P_y * K_x * K_y;
 //inittials
 const int width = 20;
 const int center_x = 50, center_y = 50;
-const int p0_x = 2, p0_y = 0;
+const int p0_x = 2, p0_y = -1;
 
 // p \in [-5; 5]
 int index(int k_x, int k_y, int p_x, int p_y){
@@ -90,6 +90,20 @@ void make_iteration_x(double* next, double* data){
 			}
 		}
 	}
+	//Зеркальное отражение
+	for (int p_x = -P0_x; p_x < P0_x; p_x++){
+		for(int p_y = -P0_y; p_y < P0_y; p_y++){
+			double gamma = get_gamma_x(p_x);
+			for (int k_y = 0; k_y < K_y; k_y++){
+				if (gamma > 0){
+					next[index(0, k_y, p_x, p_y)] = next[index(0, k_y, -p_x, p_y)];
+				} else {
+					next[index(K_x - 1, k_y, p_x, p_y)] = next[index(K_x - 1, k_y, -p_x, p_y)];
+				}
+			}
+		}
+	}
+
 }
 
 void make_iteration_y(double* next, double* data){
@@ -111,6 +125,19 @@ void make_iteration_y(double* next, double* data){
 						next[index(k_x, k_y, p_x, p_y)] = data[index(k_x, k_y, p_x, p_y)] -
 						gamma * (data[index(k_x, k_y + 1, p_x, p_y)] - data[(index(k_x, k_y, p_x, p_y))]);	
 					}
+				}
+			}
+		}
+	}
+	//Зеркальное отражение
+	for (int p_x = -P0_x; p_x < P0_x; p_x++){
+		for(int p_y = -P0_y; p_y < P0_y; p_y++){
+			double gamma = get_gamma_y(p_y);
+			for (int k_x = 0; k_x < K_x; k_x++){
+				if (gamma > 0){
+					next[index(k_x, 0, p_x, p_y)] = next[index(k_x, 0, p_x, -p_y)];
+				} else {
+					next[index(k_x, K_y - 1, p_x, p_y)] = next[index(k_x, K_y - 1, p_x, -p_y)];
 				}
 			}
 		}
