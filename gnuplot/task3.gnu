@@ -1,6 +1,6 @@
 count = 990
 step = 10
-max_z = 1
+max_z = 0.1
 
 set xrange [0:100]
 set yrange [0:100]
@@ -15,8 +15,8 @@ set term gif animate delay 10 size 2000, 1000
 
 set output "data/task3.gif"
 
-do for [n = 0 : count : step] {
+do for [n = 0 : count - 1 : step] {
     filename = sprintf("data/task3/out_%03d.dat", n)
     # filename = "data/task3/inp.dat"
     splot filename with lines title ""
-}
+
