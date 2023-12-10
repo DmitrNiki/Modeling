@@ -14,7 +14,10 @@ gif: run
 mp4: gif
 	ffmpeg -y -i data/$(SCRIPT).gif -movflags faststart -pix_fmt yuv420p data/$(SCRIPT).mp4
 
-all: mp4
+total: 
+	gnuplot -c gnuplot/plain.gnu
+
+all: mp4 total
 
 clean:
 	echo "Cleaned!"
